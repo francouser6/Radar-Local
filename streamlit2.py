@@ -69,23 +69,6 @@ def scrape_osce():
 
 "CODIGO DE PAGINA"
     
-    extract_data()
-    current_page = 1
-    while current_page < 34:
-        if click_element('//*[@id="tbBuscador:idFormBuscarProceso:dtProcesos_paginator_bottom"]/span[5]/span'):
-            WebDriverWait(driver, 60).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="tbBuscador:idFormBuscarProceso:dtProcesos_data"]/tr[1]/td[2]'))
-            )
-            extract_data()
-            current_page += 1
-        else:
-            break
-    
-    driver.quit()
-    return pd.DataFrame({'Entidad': element_1_list, 'Definición': element_2_list, 'Fecha': element_3_list})
-
-
-
 st.set_page_config(page_title="Radar Regulatorio FRM", page_icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS14bSWA3akUYXe-VV04Nw2K0QnQCwCV9SG8g&s")
 st.image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS14bSWA3akUYXe-VV04Nw2K0QnQCwCV9SG8g&s", width=250)
 st.title("Radar Regulatorio FRM")
