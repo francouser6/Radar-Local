@@ -5,24 +5,28 @@ Created on Sun Mar 30 14:30:56 2025
 @author: usuario
 """
 
-import streamlit as st
 import pandas as pd
-from Draft import scrape_sbs, scrape_smv, scrape_sbs_pre
+import logging
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+import streamlit as st
+from Draft import scrape_sbs, scrape_smv, scrape_sbs_pre
+from selenium.webdriver.support import expected_conditions as EC
+import time
 
 
 def scrape_osce():
     service = EdgeService(EdgeChromiumDriverManager().install())
     options = Options()
     options.headless = True  # Ejecutar en modo headless
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Edge(service=service, options=options)
     
     driver.get("https://prod2.seace.gob.pe/seacebus-uiwd-pub/buscadorPublico/buscadorPublico.xhtml")
@@ -62,7 +66,9 @@ def scrape_osce():
                 element_3_list.append(element_3)
             except:
                 continue
-    
+    """"""
+CODIGO DE PÁGINA
+    """"""
     extract_data()
     current_page = 1
     while current_page < 34:
@@ -77,6 +83,7 @@ def scrape_osce():
     
     driver.quit()
     return pd.DataFrame({'Entidad': element_1_list, 'Definición': element_2_list, 'Fecha': element_3_list})
+
 
 
 st.set_page_config(page_title="Radar Regulatorio FRM", page_icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS14bSWA3akUYXe-VV04Nw2K0QnQCwCV9SG8g&s")
