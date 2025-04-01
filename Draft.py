@@ -20,6 +20,8 @@ def scrape_sbs():
     service = EdgeService(EdgeChromiumDriverManager().install())
     options = Options()
     options.headless = True  # Ejecutar en modo headless
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Edge(service=service, options=options)
 
     logging.basicConfig(level=logging.INFO)
@@ -115,6 +117,7 @@ def scrape_sbs():
 # Llamar a la función y mostrar el DataFrame
 sbs = scrape_sbs()
 
+
 "-------------------------------- SMV normativa ---------------------------------------"
 
 import pandas as pd
@@ -134,6 +137,8 @@ def scrape_smv():
     service = EdgeService(EdgeChromiumDriverManager().install())
     options = Options()
     options.headless = True  # Ejecutar en modo headless
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Edge(service=service, options=options)
 
     logging.basicConfig(level=logging.INFO)
@@ -216,6 +221,7 @@ def scrape_smv():
 # Llamar a la función y mostrar el DataFrame
 smv = scrape_smv()
 
+
 "--------------///// SBS Pre Publicaciones /////---------------------------------"
 
 import pandas as pd
@@ -245,7 +251,9 @@ def scrape_sbs_pre():
 
     service = EdgeService(EdgeChromiumDriverManager().install())
     options = Options()
-    options.headless = True
+    options.headless = True  # Ejecutar en modo headless
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Edge(service=service, options=options)
 
     logging.basicConfig(level=logging.INFO)
@@ -309,4 +317,5 @@ sbs_pre = pd.concat(dataframes_sbs.values(), ignore_index=True)
 
 # Eliminar la columna "Fecha2" del DataFrame combinado
 sbs_pre.drop(columns=['Fecha2'], inplace=True)
+
     
