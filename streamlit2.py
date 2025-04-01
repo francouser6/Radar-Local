@@ -66,9 +66,9 @@ def scrape_osce():
                 element_3_list.append(element_3)
             except:
                 continue
-    """"""
-CODIGO DE PÁGINA
-    """"""
+
+"CODIGO DE PAGINA"
+    
     extract_data()
     current_page = 1
     while current_page < 34:
