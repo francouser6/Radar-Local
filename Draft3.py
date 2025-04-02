@@ -15,11 +15,13 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 def scrape_sbs():
     url = "https://www.sbs.gob.pe/app/pp/INT_CN/Paginas/Busqueda/BusquedaPortal.aspx"
-    service = EdgeService("C:\\Users\\francoolivares\\OneDrive - KPMG\\Desktop\\Franco\\msedgedriver.exe")
+    service = EdgeService(EdgeChromiumDriverManager().install())
     options = Options()
     options.headless = True  # Ejecutar en modo headless
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--remote-debugging-port=9222')  # Agregar puerto de depuración
+
     driver = webdriver.Edge(service=service, options=options)
 
     logging.basicConfig(level=logging.INFO)
@@ -113,6 +115,7 @@ def scrape_sbs():
 
 # Llamar a la función y mostrar el DataFrame
 sbs = scrape_sbs()
+
 
 
 
