@@ -2,21 +2,28 @@
 """
 RADAR REGULATORIO
 """
+import streamlit as st
+import pandas as pd
+import logging
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-def scrape_sbs():
-    url = "https://www.sbs.gob.pe/app/pp/INT_CN/Paginas/Busqueda/BusquedaPortal.aspx"
+@st.cache_resource
+def get_driver():
     service = EdgeService(EdgeChromiumDriverManager().install())
     options = Options()
     options.headless = True  # Ejecutar en modo headless
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--remote-debugging-port=9222')  # Agregar puerto de depuración
+    return webdriver.Edge(service=service, options=options)
 
-    driver = webdriver.Edge(service=service, options=options)
+def scrape_sbs():
+    url = "https://www.sbs.gob.pe/app/pp/INT_CN/Paginas/Busqueda/BusquedaPortal.aspx"
+    driver = get_driver()
 
     logging.basicConfig(level=logging.INFO)
     
@@ -30,10 +37,6 @@ def scrape_sbs():
             EC.presence_of_element_located((By.CLASS_NAME, "rgMasterTable"))
         )
         logging.info("Contenido cargado con éxito.")
-
-        # Tomar una captura de pantalla para verificar el contenido cargado
-        driver.save_screenshot('screenshot.png')
-        logging.info("Captura de pantalla tomada.")
 
         # Definir las rutas XPath para los datos
         norma_xpath_template = '//*[@id="ctl00_ContentPlaceHolder1_rdgUltimaVersionNormas_ctl00__{}"]/td[2]'
@@ -76,6 +79,7 @@ def scrape_sbs():
             except NoSuchElementException:
                 logging.warning(f"Elemento no encontrado en la posición {i}.")
                 continue
+
     except TimeoutException:
         logging.error("El contenido no se cargó a tiempo.")
         return None
@@ -106,9 +110,12 @@ def scrape_sbs():
     df['Fecha'] = df['Fecha'].dt.strftime("%d/%m/%Y")
 
     return df
-
-# Llamar a la función y mostrar el DataFrame
+# Llamar a la función y mostrar el DataFrame en Streamlit
 sbs = scrape_sbs()
+if sbs is not None:
+    st.write(sbs)
+else:
+    st.error("Error al realizar el scraping.")
 
 
 
