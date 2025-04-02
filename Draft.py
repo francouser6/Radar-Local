@@ -118,6 +118,7 @@ def scrape_sbs():
 sbs = scrape_sbs()
 
 
+
 "-------------------------------- SMV normativa ---------------------------------------"
 
 import pandas as pd
