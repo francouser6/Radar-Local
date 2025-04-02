@@ -5,22 +5,22 @@ RADAR REGULATORIO
 import pandas as pd
 import logging
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.edge.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 def scrape_sbs():
     url = "https://www.sbs.gob.pe/app/pp/INT_CN/Paginas/Busqueda/BusquedaPortal.aspx"
-    service = ChromeService(ChromeDriverManager().install())
+    service = EdgeService("C:\\Users\\francoolivares\\OneDrive - KPMG\\Desktop\\Franco\\msedgedriver.exe")
     options = Options()
     options.headless = True  # Ejecutar en modo headless
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(service=service, options=options)
+    driver = webdriver.Edge(service=service, options=options)
 
     logging.basicConfig(level=logging.INFO)
     
@@ -80,7 +80,6 @@ def scrape_sbs():
             except NoSuchElementException:
                 logging.warning(f"Elemento no encontrado en la posición {i}.")
                 continue
-
     except TimeoutException:
         logging.error("El contenido no se cargó a tiempo.")
         return None
