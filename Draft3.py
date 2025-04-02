@@ -600,3 +600,4 @@ sbs_pre = pd.concat(dataframes_sbs.values(), ignore_index=True)
 
 # Eliminar la columna "Fecha2" del DataFrame combinado
 sbs_pre.drop(columns=['Fecha2'], inplace=True)
+"""
