@@ -1,4 +1,1 @@
-wget
-unzip
-curl
 chromium
